@@ -3,31 +3,27 @@ Educational Content Search Engine
 Main application entry point
 """
 
+#Import modules
+import streamlit as st
+import boto3
 import os
-import sys
-from pathlib import Path
+from dotenv import load_dotenv
 
-# Add src to Python path for imports
-sys.path.append(str(Path(__file__).parent.parent))
+load_dotenv()
 
-from educational_search.scrapers.docx_scraper import DocxScraper
+st.set_page_config(page_title="Ou_Search")
+st.title("Ou_Search")
+
+@st.cache_resource
+def setup_bedrock():
+    return boto3.client(
+        'bedrock_agent_runtime',
+        aws_access_key_id = os.getenv('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key = os.getenv('AWS_SECRET_ACCESS_KEY'),
+        region_name = os.getenv('AWS_DEFAULT_REGION')
+    )
 
 
-def main():
-    """Main application function"""
-    print("Educational Content Search Engine")
-    print("=" * 50)
-    
-    # Initialize the DOCX scraper
-    scraper = DocxScraper()
-    
-    # Start scraping
-    try:
-        downloaded_count = scraper.scrape_docx_files(max_files=100)
-        print(f"\nSuccessfully downloaded {downloaded_count} files")
-    except Exception as e:
-        print(f"Error during scraping: {e}")
-    
 
-if __name__ == "__main__":
-    main()
+
+
