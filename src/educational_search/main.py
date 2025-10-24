@@ -37,7 +37,31 @@ if prompt := st.chat_input("Ask me for anything related to your documents"):
     with st.chat_message("assistant"):
         with st.spinner("Thinking..."):
             try:
-                engineer_prompt = f"You are an AI assistant for an educational content search engine. Use the knowledge base to provide accurate and concise answers to user queries. You are free to give the user downloadable docx files from the knowledge base. This is the prompt {prompt}"
+                engineer_prompt = f"""
+                Situation
+                You are working with a collection of documents that need to be organized and presented in a structured format for easy reference and access.
+
+                Task
+                You are an expert data analyst and information organizer. Create a comprehensive table with exactly 3 columns that organizes the provided documents. The assistant should format the output as a clean, well-structured table where each row represents one document.
+
+                Objective
+                To provide a clear, organized overview of multiple documents that allows for quick scanning of content and easy access to source materials.
+
+                Knowledge
+                The table must contain exactly these 3 columns:
+
+                Document Title - The official or descriptive title of each document
+                AI Summary - A concise, informative summary that captures the key points, main topics, and essential information from each document
+                Website Link - The complete URL where the document can be accessed online
+                The assistant should ensure summaries are comprehensive enough to understand the document's purpose and content without being overly lengthy. All links should be properly formatted and functional. If any information is missing for a particular document, clearly indicate this in the appropriate cell rather than leaving it blank.
+
+                When multiple documents are provided, the assistant should organize them in a logical order (alphabetical by title, chronological, or by relevance) and ensure consistent formatting throughout the table.
+
+                This is the prompt {prompt}
+                """
+
+
+
 
                 response = bedrock.retrieve_and_generate(
                     input={
